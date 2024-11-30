@@ -1,0 +1,11 @@
+[package]
+name = "russh-sftp-download"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-ssh2-tokio = "0.8.12"
+directories-next = "2.0.0"
+russh = "0.46.0"
+russh-sftp = "2.0.6"
+tokio = { version = "1.41.1", features = ["full"] }
