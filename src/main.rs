@@ -1,17 +1,21 @@
 use async_ssh2_tokio::client::{AuthMethod, Client, ServerCheckMethod};
 use russh_sftp::{client::SftpSession, protocol::OpenFlags};
+use tokio::fs::File;
+use tokio::io::AsyncReadExt;
+use tokio::io::AsyncWriteExt;
+use directories_next::UserDirs;
 
-//use russh_sftp::*;
-// use tokio::fs::File;
-//use tokio::io::AsyncWriteExt;
-//use std::sync::Arc;
-//use std::path::Path;
-
-const REMOTE_RAW_DIR: &str = "/shares/sander.imm.uzh/MM/PRJEB57919/raw";
+//const REMOTE_RAW_DIR: &str = "/shares/sander.imm.uzh/MM/PRJEB57919/raw";
 const USERNAME: &str = "mimeul";
+
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+    let remote_file_path = "/remote/path/to/file.docx";
+    let local_file_path = "/local/path/to/file.docx";
+
     let key_path = match ssh_key_path() {
         Ok(path) => path,
         Err(e) => {
@@ -33,18 +37,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     channel.request_subsystem(true, "sftp").await?;
     let sftp = SftpSession::new(channel.into_stream()).await?;
 
-
-    // Open the remote file for reading
     let mut remote_file = sftp.open_with_flags(
         remote_file_path,
         OpenFlags::READ,
     )
     .await?;
-
-    // Open the local file for writing
     let mut local_file = File::create(local_file_path).await?;
 
-    // Buffer to read and write file data
+
+
     let mut buffer = [0u8; 4096];
     loop {
         let n = remote_file.read(&mut buffer).await?;
