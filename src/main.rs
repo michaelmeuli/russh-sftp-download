@@ -15,14 +15,15 @@ const USERNAME: &str = "mimeul";
 //const USER_TEMPLATE_REMOTE: &str  = "/shares/sander.imm.uzh/MM/PRJEB57919/template/user_template.docx";
 //const ITOL_EXAMPLE_DATA: &str  = "/shares/sander.imm.uzh/MM/PRJEB57919/iTOL/example_data.zip";
 
-
+const TEST_DOWNLOAD_REMOTE_FILE: &str  = "/shares/sander.imm.uzh/MM/PRJEB57919/out/results/ERR10610040.results.docx";
+const TEST_DOWNLOAD_LOCALE_FILE: &str  = "C:\\Users\\micha\\Downloads\\ERR10610040.results.docx";
 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    let remote_file_path = "/remote/path/to/file.docx";
-    let local_file_path = "/local/path/to/file.docx";
+    let remote_file_path = TEST_DOWNLOAD_REMOTE_FILE;
+    let local_file_path = TEST_DOWNLOAD_LOCALE_FILE;
 
     let key_path = match ssh_key_path() {
         Ok(path) => path,
